@@ -29,8 +29,10 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
         buttonCadastrar.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View v) {
+        //checa se os campos não foram preenchidos
         if (textEmail.getText().toString().isEmpty() && textSenha.getText().toString().isEmpty())
         {
             Toast.makeText(this,"Preencha E-mail e Senha",Toast.LENGTH_LONG).show();
