@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "140947607523",
+    "project_id": "softinc-7284d",
+    "storage_bucket": "softinc-7284d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140947607523:android:932d58fe924ba78d655ad6",
+        "android_client_info": {
+          "package_name": "br.org.fatec.softinc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "140947607523-rkj0h7nkmj9a60p3k0rvjo1uhua66krn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCey0qcJbsCmwx_GunkbL5GqddGcCHCMuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "140947607523-rkj0h7nkmj9a60p3k0rvjo1uhua66krn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
