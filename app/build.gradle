@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "br.org.fatec.softinc"
-        minSdkVersion 28
+        minSdkVersion 25
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -41,4 +41,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database'
 }

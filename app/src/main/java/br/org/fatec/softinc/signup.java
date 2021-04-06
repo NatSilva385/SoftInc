@@ -19,8 +19,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import br.org.fatec.softinc.helpers.PropagarErroTexto;
+import br.org.fatec.softinc.models.User;
 
 public class signup extends AppCompatActivity implements View.OnClickListener{
     TextInputLayout nomeLayout;
@@ -34,12 +38,14 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
     EditText textNome;
     Button buttonCadastrar;
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         textEmail=(EditText)findViewById(R.id.textEmail);
         emailLayout=(TextInputLayout)findViewById(R.id.email);
         textEmail.addTextChangedListener(new PropagarErroTexto("",emailLayout));
@@ -77,6 +83,13 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    User user= new User();
+                    user.telefone=telefone;
+                    user.email=email;
+                    user.nome=nome;
+                    user.uid=task.getResult().getUser().getUid();
+                    FirebaseUser firebaseUser=mAuth.getCurrentUser();
+                    mDatabase.child("users").child(user.uid).setValue(user);
                     new MaterialAlertDialogBuilder(signup.this).setMessage("Usuário criado com sucesso").setTitle("Sucesso").setPositiveButton("Ok",null).show();
 
                 }else{
