@@ -3,6 +3,8 @@ package br.org.fatec.softinc;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -90,8 +92,13 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
                     user.uid=task.getResult().getUser().getUid();
                     FirebaseUser firebaseUser=mAuth.getCurrentUser();
                     mDatabase.child("users").child(user.uid).setValue(user);
-                    new MaterialAlertDialogBuilder(signup.this).setMessage("Usuário criado com sucesso").setTitle("Sucesso").setPositiveButton("Ok",null).show();
-
+                    new MaterialAlertDialogBuilder(signup.this).setMessage("Usuário criado com sucesso").setTitle("Sucesso").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(signup.this,MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }).show();
                 }else{
                     if(task.getException() instanceof FirebaseAuthUserCollisionException){
                         new MaterialAlertDialogBuilder(signup.this).setMessage("Usuário já existe no sistema").setTitle("Erro").setPositiveButton("Ok",null).show();
