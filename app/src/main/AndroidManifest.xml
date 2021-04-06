@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Softinc">
-        <activity android:name=".startup"></activity>
-        <activity android:name=".signup" android:exported="true" />
+        <activity android:name=".TelaPrincipal"></activity>
+        <activity android:name=".startup" />
+        <activity
+            android:name=".signup"
+            android:exported="true" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
