@@ -1,5 +1,6 @@
 package br.org.fatec.softinc;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -10,8 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 import br.org.fatec.softinc.helpers.PropagarErroTexto;
 
@@ -26,11 +33,13 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
     EditText textReSenha;
     EditText textNome;
     Button buttonCadastrar;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        mAuth = FirebaseAuth.getInstance();
         textEmail=(EditText)findViewById(R.id.textEmail);
         emailLayout=(TextInputLayout)findViewById(R.id.email);
         textEmail.addTextChangedListener(new PropagarErroTexto("",emailLayout));
@@ -55,6 +64,7 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
         String email,senha,rsenha,nome,telefone;
         nome=textNome.getText().toString();
         email=textEmail.getText().toString();
+        senha=textSenha.getText().toString();
         telefone=textPhone.getText().toString();
         if(!estaPreenchido()){
             return;
@@ -63,7 +73,19 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
             return;
         }
 
+        mAuth.createUserWithEmailAndPassword(email,senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    new MaterialAlertDialogBuilder(signup.this).setMessage("Usuário criado com sucesso").setTitle("Sucesso").setPositiveButton("Ok",null).show();
 
+                }else{
+                    if(task.getException() instanceof FirebaseAuthUserCollisionException){
+                        new MaterialAlertDialogBuilder(signup.this).setMessage("Usuário já existe no sistema").setTitle("Erro").setPositiveButton("Ok",null).show();
+                    }
+                }
+            }
+        });
 
     }
 
