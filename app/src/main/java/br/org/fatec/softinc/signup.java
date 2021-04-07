@@ -91,7 +91,7 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
                     user.nome=nome;
                     user.uid=task.getResult().getUser().getUid();
                     FirebaseUser firebaseUser=mAuth.getCurrentUser();
-                    mDatabase.child("users").child(user.uid).setValue(user);
+                    mDatabase.child("usuarios").child(user.uid).setValue(user);
                     new MaterialAlertDialogBuilder(signup.this).setMessage("Usuário criado com sucesso").setTitle("Sucesso").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

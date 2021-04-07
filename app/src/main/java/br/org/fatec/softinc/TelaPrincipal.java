@@ -40,13 +40,15 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
         }else{
-            mDatabase.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            mDatabase.child("usuarios").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if(task.isSuccessful()){
                         User user = new User();
                         Gson gson = new Gson();
-                        user = gson.fromJson(String.valueOf(task.getResult().getValue()),User.class);
+                        //user = gson.fromJson(String.valueOf(task.getResult().getValue()),User.class);
+                        user=(User)task.getResult().getValue(User.class);
+                        //System.out.println(user.nome);
                         //System.out.println(String.valueOf(task.getResult().getValue()));
                         textMenssagem.setText("Olá " + user.nome);
                     }
