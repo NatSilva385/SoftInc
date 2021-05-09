@@ -4,13 +4,12 @@ public class User {
     public String nome;
     public String email;
     public String telefone;
-    public String uid;
+    public String avatar;
 
     public User(){
 
     }
-    public User(String uid, String nome,String email, String telefone){
-        this.uid=uid;
+    public User(String nome,String email, String telefone){
         this.nome=nome;
         this.email=email;
         this.telefone=telefone;

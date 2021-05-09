@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "140947607523",
-    "project_id": "softinc-7284d",
-    "storage_bucket": "softinc-7284d.appspot.com"
+    "project_number": "43415315950",
+    "project_id": "ordemservicofatecscs",
+    "storage_bucket": "ordemservicofatecscs.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:140947607523:android:932d58fe924ba78d655ad6",
+        "mobilesdk_app_id": "1:43415315950:android:4a37857515bd2652c89aff",
         "android_client_info": {
           "package_name": "br.org.fatec.softinc"
         }
       },
       "oauth_client": [
         {
-          "client_id": "140947607523-rkj0h7nkmj9a60p3k0rvjo1uhua66krn.apps.googleusercontent.com",
+          "client_id": "43415315950-rn7636vo0hbbli43avos3obfe8ru3u5t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.org.fatec.softinc",
+            "certificate_hash": "da765984df768ce403801e44e45516e42dfc490a"
+          }
+        },
+        {
+          "client_id": "43415315950-5hf0gce2le0506qge0plk9mu69057b0p.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCey0qcJbsCmwx_GunkbL5GqddGcCHCMuY"
+          "current_key": "AIzaSyCZyZuEdOLhZGphk5_eieSdc-okxdLq9hw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "140947607523-rkj0h7nkmj9a60p3k0rvjo1uhua66krn.apps.googleusercontent.com",
+              "client_id": "43415315950-5hf0gce2le0506qge0plk9mu69057b0p.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

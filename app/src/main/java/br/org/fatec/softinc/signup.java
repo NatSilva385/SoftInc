@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import br.org.fatec.softinc.helpers.PropagarErroTexto;
 import br.org.fatec.softinc.models.User;
@@ -41,6 +43,7 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
     Button buttonCadastrar;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
         textNome.addTextChangedListener(new PropagarErroTexto("",nomeLayout));
         buttonCadastrar=(Button)findViewById(R.id.buttonCadastrar);
         buttonCadastrar.setOnClickListener(this);
+        db= FirebaseFirestore.getInstance();
     }
 
 
@@ -89,9 +93,9 @@ public class signup extends AppCompatActivity implements View.OnClickListener{
                     user.telefone=telefone;
                     user.email=email;
                     user.nome=nome;
-                    user.uid=task.getResult().getUser().getUid();
                     FirebaseUser firebaseUser=mAuth.getCurrentUser();
-                    mDatabase.child("usuarios").child(user.uid).setValue(user);
+                    //mDatabase.child("usuarios").child(firebaseUser.getUid()).setValue(user);
+                    db.collection("usuarios").document(firebaseUser.getUid()).set(user);
                     new MaterialAlertDialogBuilder(signup.this).setMessage("Usuário criado com sucesso").setTitle("Sucesso").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
