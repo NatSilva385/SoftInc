@@ -42,6 +42,7 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
     private DatabaseReference mDatabase;
     TextView textMenssagem;
     Button buttonLogoutPrincipal;
+    Button buttonConfiguracoesPrincipal;
     TextInputLayout pesquisa;
     EditText textPesquisarPrinc;
     private RecyclerView usersRecyclerView;
@@ -56,10 +57,13 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_tela_principal);
         textMenssagem = (TextView)findViewById(R.id.textMenssagem);
         buttonLogoutPrincipal = (Button)findViewById(R.id.buttonLogoutPrincipal);
+        buttonConfiguracoesPrincipal = (Button)findViewById(R.id.buttonConfiguracoesPrincipal);
+        buttonConfiguracoesPrincipal.setOnClickListener(this);
         pesquisa = (TextInputLayout)findViewById(R.id.pesquisar);
         textPesquisarPrinc = (EditText)findViewById(R.id.textPesquisarPrinc);
         usersRecyclerView =(RecyclerView) findViewById(R.id.usersRecyclerView);
-        pesquisa.setEndIconOnClickListener(new View.OnClickListener() {
+        pesquisa.setEndIconOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 pesquisaNomes(textPesquisarPrinc.getText().toString());
@@ -134,8 +138,18 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        mAuth.signOut();
-        Intent intent = new Intent(this,MainActivity.class);
-        startActivity(intent);
+        switch(v.getId()){
+            case R.id.buttonLogoutPrincipal:
+                mAuth.signOut();
+                Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.buttonConfiguracoesPrincipal:
+                Intent intent1 = new Intent(this,AlteraDados.class);
+                startActivity(intent1);
+                break;
+
+        }
+
     }
 }
