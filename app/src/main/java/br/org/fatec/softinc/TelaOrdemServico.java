@@ -20,7 +20,7 @@ import br.org.fatec.softinc.helpers.RVOrdemServico;
 import br.org.fatec.softinc.models.OrdemServico;
 import br.org.fatec.softinc.models.User;
 
-public class TelaOrdemServico extends AppCompatActivity implements View.OnClickListener {
+public class TelaOrdemServico extends AppCompatActivity implements View.OnClickListener, RVOrdemServico.OnOrdemServicoListener {
 
     private TextView textOrdemServicoNome;
     private TextView textOrdemServicoCpf;
@@ -49,7 +49,7 @@ public class TelaOrdemServico extends AppCompatActivity implements View.OnClickL
 
         ordemServicoRecyclerView = (RecyclerView)findViewById(R.id.ordemServicoRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        RVOrdemServico rvOrdemServico = new RVOrdemServico(user.ordemServicos);
+        RVOrdemServico rvOrdemServico = new RVOrdemServico(user.ordemServicos, this);
         ordemServicoRecyclerView.setLayoutManager(linearLayoutManager);
         ordemServicoRecyclerView.setAdapter(rvOrdemServico);
 
@@ -64,6 +64,17 @@ public class TelaOrdemServico extends AppCompatActivity implements View.OnClickL
         Gson gson = new Gson();
         String user = gson.toJson(this.user);
         intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onOrdemServicoClick(int position) {
+        Intent intent = new Intent(this,OrdemServicoModifica.class);
+        Gson gson = new Gson();
+        String user = gson.toJson(this.user);
+        intent.putExtra("user",user);
+        System.out.println("Valor position = " +position);
+        intent.putExtra("posicao",position+"");
         startActivity(intent);
     }
 }
