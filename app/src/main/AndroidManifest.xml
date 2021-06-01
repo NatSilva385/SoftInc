@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.org.fatec.softinc">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Softinc">
-        <activity android:name=".AlteraDados"></activity>
+        <activity android:name=".AddOrdemServico"></activity>
+        <activity android:name=".TelaOrdemServico" />
+        <activity
+            android:name=".MainADM"
+            android:exported="true" />
+        <activity android:name=".LoginADM" />
+        <activity android:name=".CadastroPasso2" />
+        <activity
+            android:name=".CadastroPasso1"
+            android:exported="true" />
+        <activity android:name=".AlteraDados" />
         <activity android:name=".TelaPrincipal" />
         <activity android:name=".startup" />
         <activity

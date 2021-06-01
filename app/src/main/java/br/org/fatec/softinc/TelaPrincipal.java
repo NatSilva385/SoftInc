@@ -61,7 +61,14 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
         buttonConfiguracoesPrincipal.setOnClickListener(this);
         pesquisa = (TextInputLayout)findViewById(R.id.pesquisar);
         textPesquisarPrinc = (EditText)findViewById(R.id.textPesquisarPrinc);
+
         usersRecyclerView =(RecyclerView) findViewById(R.id.usersRecyclerView);
+        usersRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        usersRecyclerView.setLayoutManager(linearLayoutManager);
+        //RVUser rvUser = new RVUser(new ArrayList<User>());
+        //usersRecyclerView.setAdapter(rvUser);
+
         pesquisa.setEndIconOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -112,8 +119,7 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
             });*/
         }
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        usersRecyclerView.setLayoutManager(linearLayoutManager);
+
 
 
     }
@@ -126,11 +132,14 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     List<User> users = new ArrayList<User>();
+                    RVUser rvUser = (RVUser)usersRecyclerView.getAdapter();
                    for(QueryDocumentSnapshot document: task.getResult()){
-                        users.add(document.toObject(User.class));
+                        rvUser.addItem(document.toObject(User.class));
+                        //users.add(document.toObject(User.class));
                    }
-                    RVUser rvUser = new RVUser(users);
-                    usersRecyclerView.setAdapter(rvUser);
+                    //RVUser rvUser = new RVUser(users);
+                   //usersRecyclerView.setAdapter(rvUser);
+                   // usersRecyclerView.setAdapter(rvUser);
                 }
             }
         });
