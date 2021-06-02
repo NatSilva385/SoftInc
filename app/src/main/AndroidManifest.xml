@@ -18,7 +18,7 @@
         <activity
             android:name=".MainADM"
             android:exported="true" />
-        <activity android:name=".LoginADM" />
+        <activity android:name=".LoginADM" android:exported="true"/>
         <activity android:name=".CadastroPasso2" />
         <activity
             android:name=".CadastroPasso1"
