@@ -28,6 +28,7 @@ public class TelaOrdemServico extends AppCompatActivity implements View.OnClickL
     private RecyclerView ordemServicoRecyclerView;
 
     private Button buttonOrdemServicoAdd;
+    private Button buttonOrdemServicoAddVoltar;
 
     private User user;
 
@@ -45,7 +46,10 @@ public class TelaOrdemServico extends AppCompatActivity implements View.OnClickL
         textOrdemServicoCpf = (TextView) findViewById(R.id.textOrdemServicoCpf);
 
         buttonOrdemServicoAdd= (Button)findViewById(R.id.buttonOrdemServicoAdd);
+        buttonOrdemServicoAddVoltar = (Button)findViewById(R.id.buttonOrdemServicoAddVoltar);
+
         buttonOrdemServicoAdd.setOnClickListener(this);
+        buttonOrdemServicoAddVoltar.setOnClickListener(this);
 
         ordemServicoRecyclerView = (RecyclerView)findViewById(R.id.ordemServicoRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -58,13 +62,32 @@ public class TelaOrdemServico extends AppCompatActivity implements View.OnClickL
 
     }
 
-    @Override
-    public void onClick(View v) {
+    private void voltarOnClick(){
+        Intent intent = new Intent(this,MainADM.class);
+        Gson gson = new Gson();
+        String user = gson.toJson(this.user);
+        intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    private void adicionarOnClick(){
         Intent intent = new Intent(this,AddOrdemServico.class);
         Gson gson = new Gson();
         String user = gson.toJson(this.user);
         intent.putExtra("user",user);
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.buttonOrdemServicoAdd:
+                adicionarOnClick();
+                break;
+            case R.id.buttonOrdemServicoAddVoltar:
+                voltarOnClick();
+                break;
+        }
     }
 
     @Override
