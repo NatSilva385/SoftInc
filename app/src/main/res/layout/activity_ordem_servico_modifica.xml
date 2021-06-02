@@ -161,11 +161,14 @@
             android:id="@+id/buttonOrdemServicoVoltar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_marginRight="10dp"
             android:text="Voltar" />
-        <Space
-            android:layout_width="50dp"
-            android:layout_height="match_parent"/>
+        <Button
+            android:id="@+id/buttonOrdemServicoApagar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="Apagar" />
         <Button
             android:id="@+id/buttonOrdemServicoAlterar"
             android:layout_width="wrap_content"
