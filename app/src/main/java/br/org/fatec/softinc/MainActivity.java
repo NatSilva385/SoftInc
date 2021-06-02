@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnCadastro:
-                Intent newIntent = new Intent(this,signup.class);
+                Intent newIntent = new Intent(this,CadastroPasso1.class);
                 ActivityOptions options= ActivityOptions.makeSceneTransitionAnimation(this,this.btnCadastro,"shared_element_container");
                 startActivity(newIntent);
                 break;

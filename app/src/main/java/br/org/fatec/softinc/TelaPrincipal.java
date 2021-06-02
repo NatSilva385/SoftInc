@@ -34,10 +34,11 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.org.fatec.softinc.helpers.RVOrdemServico;
 import br.org.fatec.softinc.helpers.RVUser;
 import br.org.fatec.softinc.models.User;
 
-public class TelaPrincipal extends AppCompatActivity implements View.OnClickListener {
+public class TelaPrincipal extends AppCompatActivity implements View.OnClickListener, RVOrdemServico.OnOrdemServicoListener {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     TextView textMenssagem;
@@ -55,29 +56,20 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_principal);
+
         textMenssagem = (TextView)findViewById(R.id.textMenssagem);
+
         buttonLogoutPrincipal = (Button)findViewById(R.id.buttonLogoutPrincipal);
         buttonConfiguracoesPrincipal = (Button)findViewById(R.id.buttonConfiguracoesPrincipal);
-        buttonConfiguracoesPrincipal.setOnClickListener(this);
-        pesquisa = (TextInputLayout)findViewById(R.id.pesquisar);
-        textPesquisarPrinc = (EditText)findViewById(R.id.textPesquisarPrinc);
 
-        usersRecyclerView =(RecyclerView) findViewById(R.id.usersRecyclerView);
+        buttonConfiguracoesPrincipal.setOnClickListener(this);
+        buttonLogoutPrincipal.setOnClickListener(this);
+
+        usersRecyclerView = (RecyclerView) findViewById(R.id.usersRecyclerView);
         usersRecyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         usersRecyclerView.setLayoutManager(linearLayoutManager);
-        //RVUser rvUser = new RVUser(new ArrayList<User>());
-        //usersRecyclerView.setAdapter(rvUser);
 
-        pesquisa.setEndIconOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                pesquisaNomes(textPesquisarPrinc.getText().toString());
-            }
-        });
-
-        buttonLogoutPrincipal.setOnClickListener(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -87,12 +79,6 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         }else{
             docRef = db.collection("usuarios").document(currentUser.getUid());
-            /*docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    user = documentSnapshot.toObject(User.class);
-                }
-            });*/
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -100,49 +86,12 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
                         DocumentSnapshot doc = task.getResult();
                         user = doc.toObject(User.class);
                         textMenssagem.setText("Olá " + user.nome);
+                        RVOrdemServico rvOrdemServico = new RVOrdemServico(user.ordemServicos,TelaPrincipal.this::onOrdemServicoClick);
+                        usersRecyclerView.setAdapter(rvOrdemServico);
                     }
                 }
             });
-           /* mDatabase.child("usuarios").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if(task.isSuccessful()){
-                        User user = new User();
-                        Gson gson = new Gson();
-                        //user = gson.fromJson(String.valueOf(task.getResult().getValue()),User.class);
-                        user=(User)task.getResult().getValue(User.class);
-                        //System.out.println(user.nome);
-                        //System.out.println(String.valueOf(task.getResult().getValue()));
-                        textMenssagem.setText("Olá " + user.nome);
-                    }
-                }
-            });*/
         }
-
-
-
-
-    }
-
-    private void pesquisaNomes(String nome){
-        CollectionReference usuarioRef = db.collection("usuarios");
-        Query query = usuarioRef.whereGreaterThanOrEqualTo("nome",nome);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    List<User> users = new ArrayList<User>();
-                    RVUser rvUser = (RVUser)usersRecyclerView.getAdapter();
-                   for(QueryDocumentSnapshot document: task.getResult()){
-                        rvUser.addItem(document.toObject(User.class));
-                        //users.add(document.toObject(User.class));
-                   }
-                    //RVUser rvUser = new RVUser(users);
-                   //usersRecyclerView.setAdapter(rvUser);
-                   // usersRecyclerView.setAdapter(rvUser);
-                }
-            }
-        });
     }
 
     @Override
@@ -160,5 +109,16 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
 
         }
 
+    }
+
+    @Override
+    public void onOrdemServicoClick(int position) {
+        Intent intent = new Intent(this,OrdemServicoVisualiza.class);
+        Gson gson = new Gson();
+        String user = gson.toJson(this.user);
+        intent.putExtra("user",user);
+        System.out.println("Valor position = " +position);
+        intent.putExtra("posicao",position+"");
+        startActivity(intent);
     }
 }

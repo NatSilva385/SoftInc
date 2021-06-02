@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Softinc">
-        <activity android:name=".OrdemServicoModifica"></activity>
+        <activity android:name=".OrdemServicoVisualiza"></activity>
+        <activity android:name=".OrdemServicoModifica" />
         <activity android:name=".AddOrdemServico" />
         <activity android:name=".TelaOrdemServico" />
         <activity
