@@ -3,11 +3,13 @@ package br.org.fatec.softinc;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -16,6 +18,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import br.org.fatec.softinc.models.OrdemServico;
 import br.org.fatec.softinc.models.StatusOrdemServico;
@@ -36,6 +42,18 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
 
     private User user;
     private int posicao;
+
+    private final Calendar myCalendar = Calendar.getInstance();
+
+    private DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            updateText();
+        }
+    };
 
     FirebaseFirestore db;
 
@@ -61,6 +79,7 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
         buttonOrdemServicoVoltar.setOnClickListener(this);
         buttonOrdemServicoAlterar.setOnClickListener(this);
         buttonOrdemServicoApagar.setOnClickListener(this);
+        textOrdemServicoFinalizacao.setOnClickListener(this);
 
         Gson gson = new Gson();
         user = gson.fromJson(getIntent().getStringExtra("user"),User.class);
@@ -72,22 +91,40 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
         textOrdemServicoFinalizacao.setText(user.ordemServicos.get(posicao).dataFinalizacao);
 
         spinnerOrdemServico.setSelection(user.ordemServicos.get(posicao).status.ordinal());
-
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.buttonOrdemServicoVoltar:
-                onVoltarClick();
-                break;
-            case R.id.buttonOrdemServicoAlterar:
-                onAlterarClick();
-                break;
-            case R.id.buttonOrdemServicoApagar:
-                onApagarClick();
-                break;
+
+        if(v.getId()==buttonOrdemServicoVoltar.getId()){
+            onVoltarClick();
+        }else if(v.getId()==buttonOrdemServicoAlterar.getId()){
+            onAlterarClick();
+        }else if(v.getId()==buttonOrdemServicoApagar.getId()){
+            onApagarClick();
+        }else if(v.getId()==textOrdemServicoFinalizacao.getId()){
+            onAlterarFinalizacaoClick();
         }
+    }
+
+    private void onAlterarFinalizacaoClick(){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+
+        try {
+            calendar.setTime(simpleDateFormat.parse(textOrdemServicoAbertura.getText().toString()));
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+            datePickerDialog.show();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateText(){
+        String myFormat="dd/MM/yy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat);
+        textOrdemServicoFinalizacao.setText(simpleDateFormat.format(myCalendar.getTime()));
     }
 
     private void onVoltarClick(){

@@ -2,11 +2,14 @@ package br.org.fatec.softinc;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,6 +22,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import br.org.fatec.softinc.models.OrdemServico;
 import br.org.fatec.softinc.models.StatusOrdemServico;
@@ -37,6 +43,20 @@ public class AddOrdemServico extends AppCompatActivity implements View.OnClickLi
 
     private FirebaseFirestore db;
 
+    private final Calendar myCalendar = Calendar.getInstance();
+
+    private int viewId;
+
+    private DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            updateEditText();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +66,9 @@ public class AddOrdemServico extends AppCompatActivity implements View.OnClickLi
         textaddOrdemServicoPreco = (EditText)findViewById(R.id.textaddOrdemServicoPreco);
         textaddOrdemServicoAbertura = (EditText)findViewById(R.id.textaddOrdemServicoAbertura);
         textaddOrdemServicoFinalizacao = (EditText)findViewById(R.id.textaddOrdemServicoFinalizacao);
+
+        textaddOrdemServicoAbertura.setOnClickListener(this);
+        textaddOrdemServicoFinalizacao.setOnClickListener(this);
 
         buttonAddOrdemServicoAdd = (Button)findViewById(R.id.buttonAddOrdemServicoAdd);
         buttonAddOrdemServicoAdd.setOnClickListener(this);
@@ -58,7 +81,59 @@ public class AddOrdemServico extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        if(v.getId()==buttonAddOrdemServicoAdd.getId()){
+            cadastra();
+        }else if(v.getId()==textaddOrdemServicoAbertura.getId()){
+            viewId = textaddOrdemServicoAbertura.getId();
+            getDataAbertura();
+        }else if(v.getId()==textaddOrdemServicoFinalizacao.getId()){
+            viewId = textaddOrdemServicoFinalizacao.getId();
+            getDataFinalizacao();
+        }
+    }
 
+    private void getData(){
+        DatePickerDialog d  = new DatePickerDialog(this,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
+        d.show();
+    }
+
+    private void getDataAbertura(){
+        Calendar c = Calendar.getInstance();
+
+        DatePickerDialog d  = new DatePickerDialog(this,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
+        d.getDatePicker().setMinDate(c.getTimeInMillis());
+        d.show();
+    }
+
+    private void getDataFinalizacao(){
+        Calendar c = Calendar.getInstance();
+
+        if(textaddOrdemServicoAbertura.getText().toString().isEmpty()){
+            getDataAbertura();
+        }else{
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+            try{
+                c.setTime(simpleDateFormat.parse(textaddOrdemServicoAbertura.getText().toString()));
+                DatePickerDialog d  = new DatePickerDialog(this,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
+                d.getDatePicker().setMinDate(c.getTimeInMillis());
+                d.show();
+            }catch (ParseException e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void updateEditText(){
+        String myFormat="dd/MM/yy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat);
+        if(viewId==textaddOrdemServicoAbertura.getId()){
+            textaddOrdemServicoAbertura.setText(simpleDateFormat.format(myCalendar.getTime()));
+        }else if(viewId==textaddOrdemServicoFinalizacao.getId()){
+            textaddOrdemServicoFinalizacao.setText(simpleDateFormat.format(myCalendar.getTime()));
+        }
+    }
+
+    private void cadastra(){
         if(!estaPreenchido()){
             return;
         }
@@ -111,4 +186,5 @@ public class AddOrdemServico extends AppCompatActivity implements View.OnClickLi
 
         return true;
     }
+
 }
