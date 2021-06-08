@@ -11,14 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Softinc">
-        <activity android:name=".OrdemServicoVisualiza"></activity>
+        <activity android:name=".ComentarioAdiciona"></activity>
+        <activity android:name=".OrdemServicoVisualiza" />
         <activity android:name=".OrdemServicoModifica" />
         <activity android:name=".AddOrdemServico" />
         <activity android:name=".TelaOrdemServico" />
         <activity
             android:name=".MainADM"
             android:exported="true" />
-        <activity android:name=".LoginADM" android:exported="true"/>
+        <activity
+            android:name=".LoginADM"
+            android:exported="true" />
         <activity android:name=".CadastroPasso2" />
         <activity
             android:name=".CadastroPasso1"

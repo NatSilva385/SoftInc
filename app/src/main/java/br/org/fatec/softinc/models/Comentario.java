@@ -4,5 +4,5 @@ import java.time.LocalDateTime;
 
 public class Comentario {
     public String descricao;
-    public LocalDateTime dataEnvio;
+    public String dataEnvio;
 }

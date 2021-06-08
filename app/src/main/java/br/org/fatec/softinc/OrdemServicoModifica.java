@@ -39,6 +39,7 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
     private Button buttonOrdemServicoVoltar;
     private Button buttonOrdemServicoAlterar;
     private Button buttonOrdemServicoApagar;
+    private Button buttonOrdemServicoAddComentario;
 
     private User user;
     private int posicao;
@@ -75,10 +76,12 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
         buttonOrdemServicoAlterar = (Button)findViewById(R.id.buttonOrdemServicoAlterar);
         buttonOrdemServicoVoltar = (Button)findViewById(R.id.buttonOrdemServicoVoltar);
         buttonOrdemServicoApagar = (Button)findViewById(R.id.buttonOrdemServicoApagar);
+        buttonOrdemServicoAddComentario = (Button)findViewById(R.id.buttonOrdemServicoAddComentario);
 
         buttonOrdemServicoVoltar.setOnClickListener(this);
         buttonOrdemServicoAlterar.setOnClickListener(this);
         buttonOrdemServicoApagar.setOnClickListener(this);
+        buttonOrdemServicoAddComentario.setOnClickListener(this);
         textOrdemServicoFinalizacao.setOnClickListener(this);
 
         Gson gson = new Gson();
@@ -104,7 +107,18 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
             onApagarClick();
         }else if(v.getId()==textOrdemServicoFinalizacao.getId()){
             onAlterarFinalizacaoClick();
+        }else if(v.getId()==buttonOrdemServicoAddComentario.getId()){
+            onAddComentario();
         }
+    }
+
+    private void onAddComentario(){
+        Intent intent = new Intent(OrdemServicoModifica.this, ComentarioAdiciona.class);
+        Gson gson= new Gson();
+        String userJson = gson.toJson(user);
+        intent.putExtra("user",userJson);
+        intent.putExtra("posicao",posicao+"");
+        startActivity(intent);
     }
 
     private void onAlterarFinalizacaoClick(){
