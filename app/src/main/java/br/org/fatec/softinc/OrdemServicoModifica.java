@@ -19,6 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
+import java.sql.BatchUpdateException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +41,7 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
     private Button buttonOrdemServicoAlterar;
     private Button buttonOrdemServicoApagar;
     private Button buttonOrdemServicoAddComentario;
+    private Button buttonOrdemServicoComentarios;
 
     private User user;
     private int posicao;
@@ -77,12 +79,14 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
         buttonOrdemServicoVoltar = (Button)findViewById(R.id.buttonOrdemServicoVoltar);
         buttonOrdemServicoApagar = (Button)findViewById(R.id.buttonOrdemServicoApagar);
         buttonOrdemServicoAddComentario = (Button)findViewById(R.id.buttonOrdemServicoAddComentario);
+        buttonOrdemServicoComentarios = (Button)findViewById(R.id.buttonOrdemServicoComentarios);
 
         buttonOrdemServicoVoltar.setOnClickListener(this);
         buttonOrdemServicoAlterar.setOnClickListener(this);
         buttonOrdemServicoApagar.setOnClickListener(this);
         buttonOrdemServicoAddComentario.setOnClickListener(this);
         textOrdemServicoFinalizacao.setOnClickListener(this);
+        buttonOrdemServicoComentarios.setOnClickListener(this);
 
         Gson gson = new Gson();
         user = gson.fromJson(getIntent().getStringExtra("user"),User.class);
@@ -109,7 +113,19 @@ public class OrdemServicoModifica extends AppCompatActivity implements View.OnCl
             onAlterarFinalizacaoClick();
         }else if(v.getId()==buttonOrdemServicoAddComentario.getId()){
             onAddComentario();
+        }else if(v.getId()==buttonOrdemServicoComentarios.getId()){
+            onComentariosClick();
         }
+    }
+
+    private void onComentariosClick(){
+        Intent intent = new Intent(OrdemServicoModifica.this, ComentarioVisualiza.class);
+        Gson gson= new Gson();
+        String userJson = gson.toJson(user);
+        intent.putExtra("user",userJson);
+        intent.putExtra("posicao",posicao+"");
+        intent.putExtra("anterior","adm");
+        startActivity(intent);
     }
 
     private void onAddComentario(){

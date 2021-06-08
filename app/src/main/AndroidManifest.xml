@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Softinc">
-        <activity android:name=".ComentarioAdiciona"></activity>
+        <activity android:name=".ComentarioVisualiza"></activity>
+        <activity android:name=".ComentarioAdiciona" />
         <activity android:name=".OrdemServicoVisualiza" />
         <activity android:name=".OrdemServicoModifica" />
         <activity android:name=".AddOrdemServico" />

@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import br.org.fatec.softinc.models.User;
 
@@ -26,6 +27,7 @@ public class OrdemServicoVisualiza extends AppCompatActivity implements View.OnC
     private TextView textOrdemVisualizaStatus;
 
     private Button buttonOrdemVisualizaVoltar;
+    private Button buttonOrdemVisualizaComentarios;
 
     private int posicao;
     private User user;
@@ -45,7 +47,10 @@ public class OrdemServicoVisualiza extends AppCompatActivity implements View.OnC
         textOrdemVisualizaStatus = (TextView)findViewById(R.id.textOrdemVisualizaStatus);
 
         buttonOrdemVisualizaVoltar = (Button)findViewById(R.id.buttonOrdemVisualizaVoltar);
+        buttonOrdemVisualizaComentarios = (Button)findViewById(R.id.buttonOrdemVisualizaComentarios);
+
         buttonOrdemVisualizaVoltar.setOnClickListener(this);
+        buttonOrdemVisualizaComentarios.setOnClickListener(this);
 
         posicao = Integer.parseInt(getIntent().getStringExtra("posicao"));
         db = FirebaseFirestore.getInstance();
@@ -67,7 +72,18 @@ public class OrdemServicoVisualiza extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this,TelaPrincipal.class);
-        startActivity(intent);
+        if(v.getId() == buttonOrdemVisualizaComentarios.getId()){
+            Intent intent = new Intent(OrdemServicoVisualiza.this, ComentarioVisualiza.class);
+            Gson gson= new Gson();
+            String userJson = gson.toJson(user);
+            intent.putExtra("user",userJson);
+            intent.putExtra("posicao",posicao+"");
+            intent.putExtra("anterior","user");
+            startActivity(intent);
+        }else if(v.getId() == buttonOrdemVisualizaVoltar.getId()){
+            Intent intent = new Intent(this,TelaPrincipal.class);
+            startActivity(intent);
+        }
+
     }
 }
